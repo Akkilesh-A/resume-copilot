@@ -12,9 +12,9 @@ const NavBar = () => {
                 <ul className='flex font-semibold'>
                     <li className='mx-8'><Link to="/">Home</Link></li>
                     <li>|</li>
-                    <li className='mx-8'><Link to="/resumescore">Resume Score</Link></li>
+                    <li className='mx-8'><Link to="/resumescoreform">Resume Score</Link></li>
                     <li>|</li>
-                    <li className='mx-8'>Jobs Post</li>
+                    <li className='mx-8'><Link to="/postajob">Post a Job</Link></li>
                     <li>|</li>
                     <li className='mx-8'>About</li>
                 </ul>

@@ -8,7 +8,7 @@ const HomePage = () => {
     <div>
         <NavBar />
         <div className='mx-8 flex items-center justify-around h-[100vh]'>
-            <Link to="/resumescore">
+            <Link to="/resumescoreform">
                 <div className='bg-black p-4 rounded-xl flex justify-center items-center'>
                     <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M65.8286 83.4429H3.85714C3.08571 83.4429 2.57143 82.9286 2.57143 82.1572V7.84286C2.57143 7.07143 3.08571 6.55714 3.85714 6.55714H65.8286C66.6 6.55714 67.1143 7.07143 67.1143 7.84286V42.9429C67.1143 43.7143 66.6 44.2286 65.8286 44.2286C65.0571 44.2286 64.5429 43.7143 64.5429 42.9429V9.12857H5.14286V80.8714H64.5429V70.2C64.5429 69.4286 65.0571 68.9143 65.8286 68.9143C66.6 68.9143 67.1143 69.4286 67.1143 70.2V82.1572C67.1143 82.8 66.4714 83.4429 65.8286 83.4429Z" fill="white"/>
