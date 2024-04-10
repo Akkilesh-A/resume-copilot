@@ -39,6 +39,34 @@ def delete_job(user_id):
     return jsonify({"message":"Job deleted successfully"}),200
 
 
+@app.route('/admin_login',methods=['POST'])
+def admin_login():
+    user_id=request.json.get("userId")
+    password=request.json.get("password")
+    user_id_from_db=AdminLogin.query.filter_by(user_id=user_id).first()
+    password_from_db=AdminLogin.query.filter_by(password=password).first()
+    if(user_id_from_db and password_from_db):
+        return jsonify({"message":"Login successful"}),200
+    else:
+        return jsonify({"message":"Login failed"}),401
+    
+@app.route('/admin_register',methods=['POST'])
+def admin_register():
+    user_id=request.json.get("userId")
+    password=request.json.get("password")
+    if not user_id or not password:
+        return jsonify({"error":"Please provide user id and password"}),400
+    
+    new_user=AdminLogin(user_id=user_id,password=password)
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception as e:
+        return ({"message":str(e)},400)
+    
+    return jsonify({"message":"Admin registered successfully"}),201
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

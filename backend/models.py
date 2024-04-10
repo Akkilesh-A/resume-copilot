@@ -13,13 +13,13 @@ class Jobs(db.Model):
         }
     
 class AdminLogin(db.Model):
-    id=db.Column(db.Integer, primary_key=True)
-    user_id=db.Column(db.String(10), nullable=False)
-    password=db.Column(db.String(15), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(10), nullable=False)
+    password = db.Column(db.String(15), nullable=False)
 
     def to_json(self):
         return {
-            "id":self.id,
-            "userId":self.user_id,
-            "techStack":self.password
+            "id": self.id,
+            "user_id": self.user_id,
+            "password": self.password
         }
