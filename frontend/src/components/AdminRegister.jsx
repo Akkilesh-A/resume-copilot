@@ -4,12 +4,20 @@ const AdminRegister = () => {
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [securityKey, setSecurityKey] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = document.getElementById('userId').value
     const password = document.getElementById('password').value
     const confirmPassword = document.getElementById('confirmPassword').value
+    const securityKey = document.getElementById('securityKey').value
+
+    if(securityKey!=='codechef'){
+      alert('Invalid Security Key')
+      return
+    }
+
     if(password!==confirmPassword){
       alert('Passwords do not match')
       return
@@ -62,6 +70,10 @@ const AdminRegister = () => {
                 <tr>
                   <th className='p-4'>Confirm Password</th>
                   <td><input type='password' className='border-2 border-black p-2 rounded w-[20vw]' name="confirmPassword" id='confirmPassword' placeholder='Confirm password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/></td>
+                </tr>
+                <tr>
+                  <th className='p-4'>Security Key</th>
+                  <td><input type='password' className='border-2 border-black p-2 rounded w-[20vw]' name="securityKey" id='securityKey' placeholder='Security Key' value={securityKey} onChange={(e) => setSecurityKey(e.target.value)}/></td>
                 </tr>
             </table>        
         </div>
