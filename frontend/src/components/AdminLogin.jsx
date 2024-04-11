@@ -57,12 +57,12 @@ const AdminLogin = () => {
         </div>
       </form>  
       <div className='flex justify-center mt-16'>
-        <Link to='/adminregister'><button className='mx-4 hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 underline font-bold'>
+        <Link to='/adminregister'>
+          <button className='mx-4 hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 underline font-bold'>
             <h1 className='px-4 text-s'>Register</h1> 
-        </button> </Link>
-        
-      </div>
-      
+          </button> 
+        </Link>        
+      </div>      
     </div>
   )
 }

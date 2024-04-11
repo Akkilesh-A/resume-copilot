@@ -41,7 +41,6 @@ function ResumeScoreForm() {
             </svg>   
           </button> 
         </Link>
-          
       </div>
       </form>
       
