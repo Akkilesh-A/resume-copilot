@@ -1,6 +1,7 @@
 from flask import request,jsonify
 from config import app,db
 from models import Jobs,AdminLogin
+import csv
 
 @app.route('/jobs',methods=['GET'])
 def get_jobs():
@@ -66,6 +67,16 @@ def admin_register():
         return ({"message":str(e)},400)
     
     return jsonify({"message":"Admin registered successfully"}),201
+
+
+@app.route("/resume_scan", methods=['GET'])
+def resume_scan():
+    with open('uploaded_files/resume.csv', mode='r', encoding='utf-8') as file:
+        csvFile = csv.reader(file)
+        stringlol = []
+        for lines in csvFile:
+            stringlol += lines + [" "]
+    return jsonify({"message": stringlol}), 200
 
 if __name__ == "__main__":
     with app.app_context():

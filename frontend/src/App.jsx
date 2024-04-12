@@ -9,6 +9,7 @@ import ResumeScore from "./employeeComponents/ResumeScore"
 import JobsPortal from "./employeeComponents/JobsPortal"
 import AdminLogin from "./components/AdminLogin"
 import AdminRegister from "./components/AdminRegister"
+import Simple from "./employeeComponents/Simple"
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/postajob" element={<PostAJob />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminregister" element={<AdminRegister />} />
+        <Route path="/resumescanned" element={<Simple />} />
       </Routes>
       <Footer />
     </>
