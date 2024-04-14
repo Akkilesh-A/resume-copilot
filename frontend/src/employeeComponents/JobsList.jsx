@@ -2,7 +2,7 @@ import React from 'react'
 
 function AdminJobsList({jobs}){
     return (
-    <div className='flex'>
+    <div className='flex flex-wrap'>
         {jobs.map((job) => {
                     return (
                         <div className='mx-4'>

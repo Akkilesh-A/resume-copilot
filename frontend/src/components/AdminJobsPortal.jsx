@@ -27,13 +27,22 @@ const AdminJobsPortal = () => {
            <AdminJobsList jobs={jobs} updateCallback={refreshJobsPortal}/> 
         </div>
         
-        <div className='text-center flex justify-center '>
-            <Link to="/postajob">
-                <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
-                <h1 className='pr-4 text-xl'>Post a New Job</h1> 
-                <svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>          
-                </button> 
-            </Link>
+        <div className='flex justify-center'>
+            <div className='text-center flex justify-center '>
+                <Link to="/postajob">
+                    <button className='hover:bg-black hover:fill-white mx-4 hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
+                    <h1 className='text-xl'>Post a New Job ➕</h1> 
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" height="20" width="17.5" viewBox="0 0 448 512"><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>           */}
+                    </button> 
+                </Link>
+            </div>
+            <div className='text-center flex justify-center '>
+                <a href="http://localhost:8501/">
+                    <button className='hover:bg-black hover:fill-white mx-4  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
+                    <h1 className='text-xl'>Check Resumes ✅</h1> 
+                    </button> 
+                </a>
+            </div>
         </div>
     </div>
   )
