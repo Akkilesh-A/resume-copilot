@@ -69,14 +69,26 @@ def admin_register():
     return jsonify({"message":"Admin registered successfully"}),201
 
 
-@app.route("/resume_scan", methods=['GET'])
+@app.route("/resume_scanned", methods=['GET'])
 def resume_scan():
+    job_position_clicked=request.args.get('jobtitle')
+    tech_stack_required=request.args.get('techstack')
     with open('uploaded_files/resume.csv', mode='r', encoding='utf-8') as file:
         csvFile = csv.reader(file)
-        stringlol = []
+        job_position = []
+        name=[]
+        email=[]
+        tech_stack=[]
         for lines in csvFile:
-            stringlol += lines + [" "]
-    return jsonify({"message": stringlol}), 200
+            if(lines[0]==job_position_clicked):
+                job_position += "["+lines[0] + "]"
+                name += "["+lines[1] + "]"
+                email += "["+lines[2] + "]"
+                tech_stack += "["+lines[3] + "]"
+        if len(job_position)<1:
+            job_position+="No Resume Found"
+
+    return jsonify({"techStackRequired":tech_stack_required,"jobPositionClicked": job_position_clicked,"jobPosition": job_position,"name": name,"email": email,"techStack": tech_stack}), 200
 
 if __name__ == "__main__":
     with app.app_context():

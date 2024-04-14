@@ -25,7 +25,7 @@ function App() {
         <Route path="/postajob" element={<PostAJob />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminregister" element={<AdminRegister />} />
-        <Route path="/resumescanned" element={<Simple />} />
+        <Route path="/resumescanned/:jobTitle" element={<Simple />} />
       </Routes>
       <Footer />
     </>
