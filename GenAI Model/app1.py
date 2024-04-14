@@ -11,6 +11,10 @@ load_dotenv()
 # Configure the generative AI model with the Google API key
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
+with open('./style.css') as f:
+    css = f.read()
+
+st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
 # Set up the model configuration for text generation
 generation_config = {

@@ -60,20 +60,19 @@ def extract_text_from_docx_file(uploaded_file):
 # Initialize Streamlit app
 url = 'http://localhost:5173/adminjobsportal'
 
-if st.button('Go Back'):
-    webbrowser.open_new_tab(url)
-
-with open('./wave.css') as f:
+with open('./style.css') as f:
     css = f.read()
 
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
-st.title("Intelligent ATS-Enhance Your Resume ATS")
+st.title("Upload Resumes 🚀")
 st.markdown('<style>h1{color: black; text-align: center;}</style>', unsafe_allow_html=True)
 job_description = st.text_area("Paste the Job Description", height=300)
 uploaded_files = st.file_uploader("Upload Your Resume", type=["pdf", "docx"], accept_multiple_files=True, help="Please upload PDF or DOCX files")
 
 submit_button = st.button("Submit")
+if st.button('Go Back'):
+    webbrowser.open_new_tab(url)
 
 if submit_button:
     if uploaded_files:
