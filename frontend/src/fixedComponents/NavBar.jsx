@@ -23,7 +23,7 @@ const NavBar = () => {
                 </ul>
             </div>
         </div>
-        <hr className='mx-8 my-4' />
+        <hr className='mx-8 my-4 border border-black' />
     </div>
   )
 }

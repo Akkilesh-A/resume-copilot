@@ -10,6 +10,8 @@ import JobsPortal from "./employeeComponents/JobsPortal"
 import AdminLogin from "./components/AdminLogin"
 import AdminRegister from "./components/AdminRegister"
 import Simple from "./employeeComponents/Simple"
+import ResumeScanner from "./components/ResumeScanner"
+import Testing from "./components/Testing"
 
 function App() {
 
@@ -26,6 +28,8 @@ function App() {
         <Route path="/adminlogin" element={<AdminLogin />} />
         <Route path="/adminregister" element={<AdminRegister />} />
         <Route path="/resumescanned/:jobTitle" element={<Simple />} />
+        <Route path="/resumescannerform" element={<ResumeScanner />} />
+        <Route path="/testing" element={<Testing />} />
       </Routes>
       <Footer />
     </>
