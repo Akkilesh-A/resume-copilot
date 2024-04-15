@@ -27,7 +27,7 @@ const JobsPortal = () => {
             <JobsList jobs={jobs} updateCallback={refreshJobsPortal}/>
         </div>
         <div className='text-center flex justify-center '>
-            <a target="_self" href="http://localhost:8502/">
+            <a target="_self" href="https://resumematcher.streamlit.app/">
                 <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
                 <h1 className='text-xl'>Get Your Resume Score 🚀</h1> 
                 </button> 
