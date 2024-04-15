@@ -37,7 +37,7 @@ const AdminJobsPortal = () => {
                 </Link>
             </div>
             <div className='text-center flex justify-center '>
-                <a href="http://localhost:8501/">
+                <a href="https://employee-screener.streamlit.app/">
                     <button className='hover:bg-black hover:fill-white mx-4  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
                     <h1 className='text-xl'>Check Resumes ✅</h1> 
                     </button> 
