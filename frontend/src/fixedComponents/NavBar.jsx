@@ -15,9 +15,9 @@ const NavBar = () => {
                 <ul className='flex font-semibold'>
                     <li className='mx-8'><Link to="/">Home 🏠</Link></li>
                     <li>|</li>
-                    <li className='mx-8'><Link to="/resumescoreform">Resume Score 🚀</Link></li>
+                    <li className='mx-8'><a href="https://resumematcher.streamlit.app/">Resume Score 🚀</a></li>
                     <li>|</li>
-                    <li className='mx-8'><Link to="/postajob">Post a Job 📝</Link></li>
+                    <li className='mx-8'><Link to="/resumescoreform">GitHub Stats 🧑🏻‍💻</Link></li>
                     <li>|</li>
                     <li className='mx-8'>About 🤩</li>
                 </ul>

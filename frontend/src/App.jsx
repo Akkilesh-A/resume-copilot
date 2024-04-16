@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/resumescoreform" element={<ResumeScoreForm />} />
-        <Route path="/resumescore" element={<ResumeScore />} />
+        <Route path="/githubstats/:gitHubDetails" element={<ResumeScore />} />
         <Route path="/adminjobsportal" element={<AdminJobsPortal />} />
         <Route path="/jobs" element={<JobsPortal />} />
         <Route path="/postajob" element={<PostAJob />} />
