@@ -19,7 +19,7 @@ function ResumeScoreForm() {
                 <td><input className='border-2 border-black p-2 rounded w-[20vw]' type="text" name="name" placeholder='Your Full Name' value={name} onChange={(e)=>setName(e.target.value)} /></td>
               </tr>
               <tr>
-                <th className='p-4'>GitHub Profile</th>
+                <th className='p-4'>GitHub Username</th>
                 <td><input className='border-2 border-black p-2 rounded w-[20vw]' type="text" name="githubURL" placeholder='GitHub Profile URL' value={github} onChange={(e)=>setGitHub(e.target.value)}  /></td>
               </tr>
           </table>

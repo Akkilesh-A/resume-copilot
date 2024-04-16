@@ -19,7 +19,7 @@ const NavBar = () => {
                     <li>|</li>
                     <li className='mx-8'><Link to="/resumescoreform">GitHub Stats 🧑🏻‍💻</Link></li>
                     <li>|</li>
-                    <li className='mx-8'>About 🤩</li>
+                    <li className='mx-8'><Link to="/about">About 🤩</Link></li>
                 </ul>
             </div>
         </div>
