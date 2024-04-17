@@ -7,21 +7,34 @@ const ResumeScore = () => {
     const gitHubDetailsArray = gitHubDetails ? gitHubDetails.split("&") : [];
     const github_user=gitHubDetailsArray[0]
     const user_name=gitHubDetailsArray[1]
-    const git_hub_user_name_1 = "https://myreadme.vercel.app/api/embed/"+github_user+"?panels=userstatistics,toprepositories,toplanguages,commitgraph"
-    const git_hub_user_name_2 ="https://github-readme-stats.vercel.app/api/top-langs?username="+github_user+"&show_icons=true&locale=en&layout=compact&theme=chartreuse-light"
+
   return (
-    <div className='mx-8 mt-16'>
-        <div className='text-[2.5em] font-bold '>
+    <div className='mx-8 mt-24'>
+        <div className=' text-center text-[2.5em] font-bold '>
             Your GitHub Stats
         </div>
-        <div className='flex flex-col'>
-            <h2 className='text-[1.5em]'>Hello! {user_name}</h2>
-            <div className='flex'>
-                <img className="mx-4" src={git_hub_user_name_2} alt="ovi" />
-                <img src={git_hub_user_name_1} alt="reimaginedreadme" />
+        <h2 className='text-[2em] text-center mb-8'>Hello! {user_name}</h2>
+        <div className='justify-center flex flex-col items-center'>
+            <div className='flex flex-wrap justify-center mb-24'>
+                <div className='flex flex-col justify-center items-center mb-8'>
+                    <img src={"https://myreadme.vercel.app/api/embed/"+github_user+"?panels=userstatistics,toprepositories,toplanguages,commitgraph"} alt="reimaginedreadme" />
+                    <p className="mt-4 font-bold">GitHub All Stats</p>
+                </div>
+                <div className='flex flex-col justify-center items-center mb-8 mr-24'>
+                    <img src={"https://github-readme-streak-stats.herokuapp.com/?user="+github_user+"&theme=tokyonight"} alt="mystreak"/>
+                    <p className="mt-4 font-bold">Longest streak stats</p>
+                </div>
+                <div className='flex flex-col justify-center items-center mb-8'>
+                    <img className="mx-4" src={"https://github-readme-stats.vercel.app/api/top-langs?username="+github_user+"&show_icons=true&locale=en&layout=compact&theme=chartreuse-light"} alt="ovi" />
+                    <p className="mt-4 font-bold">GitHub top languages</p>
+                </div>
             </div>
         </div>
-        
+        <div className='justify-center flex flex-col'>
+            <div className='flex'>
+                
+            </div>
+        </div>        
     </div>
   )
 }
