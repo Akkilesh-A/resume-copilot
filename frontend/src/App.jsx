@@ -29,7 +29,7 @@ function App() {
         <Route path="/resumescanned/:jobTitle" element={<Simple />} />
         <Route path="/about" element={<About />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
