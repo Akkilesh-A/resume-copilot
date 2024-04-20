@@ -26,13 +26,13 @@ const JobsPortal = () => {
         <div className='h-[50vh]'>
             <JobsList jobs={jobs} updateCallback={refreshJobsPortal}/>
         </div>
-        <div className='text-'>*Click Copy to Clipboard to copy to the Tech Stack!</div>
+        <div className='text-'>*Click on <span className='font-semibold'>Copy to Clipboard</span> to copy the Tech Stack!</div>
         <div className='text-center flex justify-center '>
-            <a target="_self" href="https://resumematcher.streamlit.app/">
+            <Link to="/resumescannerform">
                 <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
                 <h1 className='text-xl'>Get Your Resume Score 🚀</h1> 
                 </button> 
-            </a>
+            </Link>
         </div>
     </div>
 
