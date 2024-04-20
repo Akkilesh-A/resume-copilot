@@ -37,7 +37,6 @@ function AdminJobsList({jobs,updateCallback, onUpdate}){
         const data={
             jobTitle:jobClicked,
         }
-        alert("submit done")
         const url="http://localhost:5000/resume_scanned"
         const options={
             method:"POST",
