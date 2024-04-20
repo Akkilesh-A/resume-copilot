@@ -43,11 +43,11 @@ def extract_text_from_pdf_file(uploaded_file):
     text_content = ""
     for page in pdf_reader.pages:
         text_content += str(page.extract_text())
-    return text_content
+    return text_content.lower()  # Convert text to lowercase
 
 def extract_text_from_docx_file(uploaded_file):
     # Use docx2txt to extract text from a DOCX file
-    return docx2txt.process(uploaded_file)
+    return docx2txt.process(uploaded_file).lower()  # Convert text to lowercase
 
 #PROMPT TEMPLATE
 input_prompt_template = """
@@ -73,7 +73,7 @@ st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 st.title("Get Your Resume Score 🚀")
 st.markdown('<style>h1{color: black; text-align: center;}</style>', unsafe_allow_html=True)
 
-job_description = st.text_area("Paste the Job Description", height=300)
+job_description = st.text_area("Paste the Job Description", height=300).lower()  # Convert to lowercase
 uploaded_files = st.file_uploader("Upload Your Resume", type=["pdf", "docx"], accept_multiple_files=True, help="Please upload a single PDF or DOCX file")
 submit_button = st.button("Submit")
 
@@ -89,6 +89,7 @@ elif submit_button and uploaded_files:
         elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
             resume_text = extract_text_from_docx_file(uploaded_file)
         
+        # Convert resume text and job description to lowercase
         response_text = generate_response_from_gemini(input_prompt_template.format(text=resume_text, job_description=job_description))
 
         # Extract Job Description Match percentage from the response
@@ -98,7 +99,7 @@ elif submit_button and uploaded_files:
             st.error("Sorry, your skills do not match the requirements 😣")
             
             # Extract missing keywords from the response
-            missing_keywords = response_text.split('"Missing Keywords":"')[1].split('"')[0]
+            missing_keywords = response_text.split('"Missing Keywords":"')[1].split('"')[0].lower()  # Convert to lowercase
             st.subheader("Missing Keywords:")
             st.write(missing_keywords)
             # Provide suggestions for improving the resume
@@ -127,7 +128,7 @@ elif submit_button and uploaded_files:
                 st.error(f" Match {match_percentage_str}😭 - This resume does not match the job description.")  # Highlight in red for a poor match
                 
                 # Extract missing keywords from the response
-                missing_keywords = response_text.split('"Missing Keywords":"')[1].split('"')[0]
+                missing_keywords = response_text.split('"Missing Keywords":"')[1].split('"')[0].lower()  # Convert to lowercase
                 # Provide suggestions for improving the resume
                 st.subheader("How to Improve Your Resume:")
                 st.write("1. Incorporate the missing keywords from the job description into your resume.")
