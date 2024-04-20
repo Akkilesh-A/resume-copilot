@@ -15,6 +15,8 @@ function ResumeScanner() {
         formData.append('image', image);
         // formData.append('jobTitle',jobTitle)
         // formData.append('techStack',techStack)
+        formData.append('jobTitle', jobTitle);
+        formData.append('techStack', techStack);
 
         const url = "http://localhost:5000/resume_scan_with_ai"; // Ensure this matches your Flask route
         const options = {

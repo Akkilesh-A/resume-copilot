@@ -19,28 +19,26 @@ const ResumeScore = () => {
   return (
     <div>
         <h1 className='mt-24 mx-8'>Resume Score!</h1>
-        {score.map((job) => {
-                    return (
-                        <div className='mx-4'>
-                            <div className='my-4 h-[5vh] flex flex-col items-center'>
-                                <div className='flex-col bg-gray-300  hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>
-                                    <h1 className='mx-4 text-[1em] font-semibold '>
-                                        <span className='font-bold'>Job Position:</span> {job.jobPosition}
-                                    </h1>
-                                    <p>
-                                        <span className='font-bold'>Tech Stack Required:</span> {job.techStack}
-                                    </p>
-                                    <p>
-                                        <span className='font-bold'>Name:</span> {job.name}
-                                        <span className='font-bold'>Phone Number:</span> {job.phoneNumber}
-                                    </p>
-                                </div>
+        {
+            score.length > 0 && (
+                <div className='mx-4'>
+                    <div className='my-4 h-[5vh] flex flex-col items-center'>
+                        <div className='flex-col bg-gray-300 hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>
+                            <h1 className='mx-4 text-[1em] font-semibold '>
+                                <span className='font-bold'>Job Position:</span> {score[score.length - 1].jobPosition}
+                            </h1>
+                            <p>
+                                <span className='font-bold'>Tech Stack Required:</span> {score[score.length - 1].techStack}
+                            </p>
+                            <div className='flex flex-col justify-center items-center'>
+                                <p><span className='font-bold'>Score: </span> {score[score.length - 1].name}</p>
+                                <p><span className='font-bold'>Result: </span> {score[score.length - 1].phoneNumber} should be learnt</p>
                             </div>
                         </div>
-                    )
-                }
+                    </div>
+                </div>
             )
-        }  
+        }
     </div>
   )
 }
