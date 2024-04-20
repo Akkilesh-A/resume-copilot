@@ -1,0 +1,124 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.stApp > header {
+    background-color: #f1f1f1;
+    color: #333; /* Dark grey text */
+    font-weight: 600; /* Medium font weight */
+}
+
+.stApp {
+    background-color: #f1f1f1;
+    font-weight: 400; /* Regular font weight */
+}
+
+body {
+    color: #333; /* Dark grey text */
+    font-family: 'Poppins', sans-serif;
+    cursor: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20"%3E%3Cpath fill="black" d="M320 160H192c-17.7 0-32 14.3-32 32v192c0 17.7 14.3 32 32 32h128c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32zm-16 208h-96V224h96v144zm32-240H176c-8.8 0-16 7.2-16 16v224c0 8.8 7.2 16 16 16h160c8.8 0 16-7.2 16-16V176c0-8.8-7.2-16-16-16z"%3E%3C/path%3E%3C/svg%3E'), auto; /* Custom black cursor */
+}
+
+/* Text above textarea and dropzone */
+.st-emotion-cache-sh2krr {
+    color: #333; /* Dark grey text */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* Medium font weight */
+}
+
+.e1nzilvr5 {
+    font-size: 2.5rem; /* Decrease size slightly */
+    font-weight: 700; /* Bold font weight */
+}
+
+/* Button */
+.st-emotion-cache-19rxjzo {
+    color: #333; /* Dark grey text */
+    background-color: #fff; /* White background */
+    border: 2px solid #333; /* Dark grey border */
+    border-radius: 8px; /* Slightly rounded corners */
+    font-weight: 700; /* Bold font weight */
+    padding: 10px 20px; /* Padding for button */
+}
+
+/* Button when hovered */
+.st-emotion-cache-19rxjzo:hover {
+    color: #fff; /* White text */
+    background-color: #333; /* Dark grey background */
+}
+
+/* Button text */
+.st-emotion-cache-3ps0xc {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700; /* Bold font weight */
+}
+
+/* Header */
+.st-emotion-cache-10trblm {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem; /* Decrease size slightly */
+    color: #333; /* Dark grey text */
+}
+
+.st-ae,
+.st-emotion-cache-1erivf3 {
+    background-color: #fff; /* White background */
+    border: 2px solid #333; /* Dark grey border */
+    color: #333; /* Dark grey text */
+}
+
+/* Limit 200Mb per File */
+.st-emotion-cache-7oyrr6 {
+    color: #333; /* Dark grey text */
+}
+
+/* Cloud, Upload File SVG */
+.st-emotion-cache-6rlrad,
+.eyeqlp51 {
+    fill: #333; /* Dark grey fill color */
+}
+
+.st-emotion-cache-fis6aj {
+    color: #333; /* Dark grey text */
+    fill: #333; /* Dark grey fill color */
+}
+
+.st-emotion-cache-cnbvxy {
+    color: #333; /* Dark grey text */
+}
+
+.st-emotion-cache-12pd2es {
+    background-color: #fff; /* White background */
+}
+
+.st-emotion-cache-1uixxvy {
+    color: #333; /* Dark grey text */
+}
+
+
+/* Go back Button CSS start */
+.custom_button{
+    background-color: white;
+    color: black;
+    font-family: Poppins;
+    text-align: center;  
+    font-weight: bold;
+    text-decoration: none;    
+}
+
+.custom_button p{
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
+    width: 20%;
+    font-size: large; 
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.custom_button p:hover{
+    background-color: black;
+    color: white;
+    text-decoration: none;
+}
+/* Go back Button CSS ends */

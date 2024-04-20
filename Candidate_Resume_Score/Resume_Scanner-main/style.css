@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.stApp > header {
+    background-color: #f1f1f1;
+    color: black;
+}
+
+.stApp {
+    background-color: #f1f1f1;
+    font-weight: 500;  
+}
+
+body{
+    color: black;
+    font-family: Poppins;
+}
+
+/*text above teaxtarea and dropzone*/
+.st-emotion-cache-sh2krr{
+    color: black;
+    font-family: Poppins;
+    font-weight: bold;
+}
+.e1nzilvr5{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+/*button*/
+.st-emotion-cache-19rxjzo{
+    color: black;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/*button when hovered*/
+.st-emotion-cache-19rxjzo:hover{
+    color: white;
+    background-color: black;
+    border: 2px solid black;
+}
+
+/*button text*/
+.st-emotion-cache-3ps0xc{
+    font-family: Poppins;
+    font-weight: bold;
+}
+
+/*Header*/
+.st-emotion-cache-10trblm{
+    font-family: Poppins;
+    font-size: 3rem;
+    color: black;
+
+}
+
+.st-ae,.st-emotion-cache-1erivf3{
+    background-color: white;
+    border: 2px solid black;
+    color: black;
+}
+
+/*Limit 200Mb per File*/
+.st-emotion-cache-7oyrr6{
+    color: black;
+}
+
+/*Cloud,Upload File SVG*/
+.st-emotion-cache-6rlrad,.eyeqlp51{
+    fill: black;
+}
+
+.st-emotion-cache-fis6aj{
+    color: black;
+    fill: black;
+}
+.st-emotion-cache-cnbvxy 
+{
+    color: black;
+}
+.st-emotion-cache-12pd2es{
+background-color: white;
+height: 2px;
+}
+.st-emotion-cache-1uixxvy
+{
+    color: black;
+}
+
+.custom_button{
+    background-color: white;
+    color: black;
+    font-family: Poppins;
+    text-align: center;  
+    font-weight: bold;
+    text-decoration: none;    
+}
+
+.custom_button p{
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
+    width: 20%;
+    font-size: large; 
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.custom_button p:hover{
+    background-color: black;
+    color: white;
+    text-decoration: none;
+}
+.st-emotion-cache-us3b1e
+{
+    border-radius: 10px;
+    padding: 5px;
+}
+.st-emotion-cache-cnbvxy p{
+font-size: 1.5rem;
+}
