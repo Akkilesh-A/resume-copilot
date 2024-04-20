@@ -180,4 +180,4 @@ if submit_button:
                         </div>
                     """, unsafe_allow_html=True)
             else:
-                st.error("🛑 No candidates meet the minimum score criteria (70% or above MA).")
+                st.error("🛑 No candidates meet the minimum score criteria (70% or above ).")
