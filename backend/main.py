@@ -100,7 +100,7 @@ def resume_scan():
 UPLOAD_FOLDER = 'uploaded_files'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-
+#generating score for JOB SEEKERS!
 @app.route("/resume_scan_with_ai", methods=['POST'])
 def resume_scanner():
     if 'image' not in request.files:
@@ -162,6 +162,24 @@ def resume_scanner():
         # Use docx2txt to extract text from a DOCX file
         return docx2txt.process(uploaded_file)
 
+    def tokenize_text(text):
+        """Tokenizes text into words and removes punctuation."""
+        text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
+        words = text.split()  # Tokenize text into words
+        return words
+
+    def get_missing_keywords(job_description, resume_text):
+        """Get missing keywords from job description that are absent in resume."""
+        # Tokenize job description and resume text
+        job_words = set(tokenize_text(job_description))
+        resume_words = set(tokenize_text(resume_text))
+        
+        # Calculate missing keywords
+        missing_keywords = job_words - resume_words  # Difference between job and resume words
+        
+        # Return sorted list of missing keywords for readability
+        return sorted(list(missing_keywords))
+
     string_to_be_sent=" "
 
     selected_candidates = []  
@@ -175,7 +193,7 @@ def resume_scanner():
             resume_text = extract_text_from_docx_file(docx_file)
             print("Extracted DOCX Text:", resume_text)  # Debugging statement
 
-    #PROMPT TEMPLATE
+    # Prompt template
     input_prompt_template = """
     As an experienced Applicant Tracking System (ATS) analyst,
     with profound knowledge in technology, software engineering, data science, 
@@ -189,11 +207,11 @@ def resume_scanner():
     "Job Description Match":"%", "Missing Keywords":""
     """
 
+
     if uploaded_file_from_form:
         if not tech_stack.strip():
             return jsonify({"message":"Please provide the Job Description ⚠"})
         else:
-            uploaded_file = uploaded_file_from_form
             if uploaded_file_from_form.mimetype == "application/pdf":
                 with open(file_path, "rb") as pdf_file:
                     resume_text = extract_text_from_pdf_file(pdf_file)
@@ -204,12 +222,16 @@ def resume_scanner():
                     print("Extracted DOCX Text:", resume_text)  # Debugging statement
             response_text = generate_response_from_gemini(input_prompt_template.format(text=resume_text, job_description=tech_stack))
 
+            # Initialize missing_keywords variable
+            missing_keywords = ""
+
             # Extract Job Description Match percentage from the response
             match_percentage_str = response_text.split('"Job Description Match":"')[1].split('"')[0]
 
             if match_percentage_str == 'N/A':
                 score=match_percentage_str+" Sorry yours Skills do not match with the requirements 😣"
-                missing_keywords = response_text.split('"Missing Keywords":"')[1].split('"')[0]
+                # Get missing keywords from the job description and resume
+                missing_keywords = get_missing_keywords(tech_stack, resume_text)
                 result=missing_keywords
             
             else:
@@ -217,7 +239,7 @@ def resume_scanner():
                 match_percentage = float(match_percentage_str.rstrip('%'))
                 score=match_percentage
 
-                if match_percentage >= 70:
+                if match_percentage >= 20:
                     result=f" Your Resume Match is {match_percentage_str}😊 - This resume matches the job description!"  # Highlight in green for a good match
                 else:
                     result=f" Match {match_percentage_str}😭 - This resume does not match the job description."  # Highlight in red for a poor match
