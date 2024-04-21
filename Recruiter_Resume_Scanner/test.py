@@ -10,6 +10,7 @@ import spacy
 from spacy.matcher import Matcher
 from PyPDF2 import PdfFileReader
 import phonenumbers
+import fitz  # PyMuPDF
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -73,9 +74,9 @@ def extract_candidate_name(resume_text):
     # If no names found, return "Candidate Name"
     return names[0] if names else "Candidate Name"
 
-def extract_candidate_phone_number(resume_text):
+def extract_candidate_phone_number(resume_text, default_country_code):
     # Find all occurrences of phone numbers in the text
-    candidate_phones = phonenumbers.PhoneNumberMatcher(resume_text, "ZZ")  # Assuming "ZZ" as the default country code
+    candidate_phones = phonenumbers.PhoneNumberMatcher(resume_text, default_country_code)
 
     # Initialize a list to store formatted phone numbers
     formatted_phones = []
@@ -96,6 +97,42 @@ def extract_candidate_phone_number(resume_text):
         return formatted_phones
     else:
         return "Phone number not found"
+
+def extract_github_links_from_pdf(uploaded_file):
+    # Get the file path of the uploaded PDF file
+    file_path = f"/tmp/{uploaded_file.name}"
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+
+    # Initialize a list to store extracted links
+    links = []
+
+    # Open the PDF file
+    pdf_document = fitz.open(file_path)
+
+    # Iterate through each page of the PDF
+    for page_num in range(len(pdf_document)):
+        # Get the page object
+        page = pdf_document[page_num]
+        
+        # Extract links from the page
+        page_links = page.get_links()
+        
+        # Iterate through each link on the page
+        for link in page_links:
+            # Get the URL of the link
+            url = link.get("uri")
+            # Check if the URL is a GitHub link
+            if "github.com" in url:
+                links.append(url)
+
+    # Close the PDF document
+    pdf_document.close()
+
+    # Delete the temporary file
+    os.remove(file_path)
+
+    return links
 
 def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
     # Implement this function to calculate the match percentage
@@ -138,27 +175,31 @@ if submit_button:
                 # Extract candidate name
                 candidate_name = extract_candidate_name(resume_text)
 
-                # Extract candidate phone number
-                candidate_phone = extract_candidate_phone_number(resume_text)
+                # Extract GitHub links
+                github_links = extract_github_links_from_pdf(uploaded_file)
 
                 # Calculate job description match percentage
                 match_percentage = calculate_match_percentage(resume_text, job_description, minimum_passing_score)
 
                 # Check if candidate meets minimum score criteria
                 if match_percentage is not None and match_percentage >= minimum_passing_score:
+                    # Extract candidate phone number
+                    candidate_phone = extract_candidate_phone_number(resume_text, "ZZ")  # Assuming ZZ as the default country code
+
                     # Append candidate details to the list of selected candidates
-                    selected_candidates.append((candidate_name, candidate_phone))
+                    selected_candidates.append((candidate_name, candidate_phone, github_links))
                     no_candidates_meet_criteria = False
 
-            # Display selected candidates' names and phone numbers in columns with improved style
+            # Display selected candidates' names, phone numbers, and GitHub links in columns with improved style
             if selected_candidates:
                 st.subheader("🌟 Selected Candidates 🌟")
-                for i, (name, phone) in enumerate(selected_candidates, start=1):
+                for i, (name, phone, github_links) in enumerate(selected_candidates, start=1):
                     st.markdown(f"""
                         <div style="background-color: #fff; border: 2px solid #333; padding: 10px; margin-bottom: 10px;">
                             <p style="font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.2rem;">Candidate {i}</p>
                             <p style="font-family: 'Poppins', sans-serif; font-size: 1rem;">Name: {name}</p>
                             <p style="font-family: 'Poppins', sans-serif; font-size: 1rem;">Phone: {phone}</p>
+                            <p style="font-family: 'Poppins', sans-serif; font-size: 1rem;">GitHub Links: {', '.join(github_links) if github_links else 'None'}</p>
                         </div>
                     """, unsafe_allow_html=True)
             else:
