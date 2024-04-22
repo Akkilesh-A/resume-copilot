@@ -23,10 +23,6 @@ const AdminJobsPortal = () => {
   return (
     <div className='mt-24 mx-8 flex flex-col'>
         <h1 className='text-[2.5em] font-bold text-center'>Manage Job Openings</h1>
-        <div className='h-[50vh]'>
-           <AdminJobsList jobs={jobs} updateCallback={refreshJobsPortal}/> 
-        </div>
-        
         <div className='flex justify-center'>
             <div className='text-center flex justify-center '>
                 <Link to="/postajob">
@@ -44,6 +40,12 @@ const AdminJobsPortal = () => {
                 </Link>
             </div>
         </div>
+        
+        <div className=''>
+           <AdminJobsList jobs={jobs} updateCallback={refreshJobsPortal}/> 
+        </div>
+        
+        
     </div>
   )
 }

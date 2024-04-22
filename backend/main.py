@@ -1,12 +1,18 @@
 from flask import request,jsonify,render_template
 from config import app,db
-from models import Jobs,AdminLogin,JobSeekerResumeScore,RecruiterResumeUploads
+from models import Jobs,AdminLogin,JobSeekerResumeScore,BestResumes
 import csv
 import google.generativeai as genai
 import os
 import docx2txt
 import PyPDF2 as pdf
 import re
+import webbrowser
+import spacy
+from spacy.matcher import Matcher
+from PyPDF2 import PdfFileReader
+import phonenumbers
+import fitz  # PyMuPDF
 
 
 @app.route('/jobs',methods=['GET'])
@@ -253,8 +259,7 @@ def resume_scanner():
         return ({"message":str(e)},400)
     
     return jsonify({"message": "File processed and saved successfully & Resume Score stored successfully","stringGotten":string_to_be_sent+job_title+tech_stack}), 200
-
-                
+              
 @app.route('/resumescore',methods=['GET'])
 def get_resume_score():
     jobs=JobSeekerResumeScore.query.all()
@@ -263,13 +268,17 @@ def get_resume_score():
 
 MULTIPLE_RESUMES_UPLOAD_FOLDER='multiple_resume_uploads'
 app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'] = MULTIPLE_RESUMES_UPLOAD_FOLDER
-#Scanning multiple resumes
+
+
+# # Scanning multiple resumes WORKING new THINGY
 @app.route("/recruiter_resume_scan", methods=['POST'])
 def multiple_resume_scanner():
     job_title = request.form.get('jobTitle')
     tech_stack = request.form.get('techStack')
     no_of_resumes=int(request.form.get('noOfResumes'))
 
+    job_description=tech_stack
+    minimum_passing_score=60
     if 'image_0' not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
@@ -282,9 +291,7 @@ def multiple_resume_scanner():
         file_path = os.path.join(app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'], uploaded_file_from_form['image_'+str(i)].filename)
         uploaded_file_from_form['image_'+str(i)].save(file_path)
 
-    # Process the uploaded file here if needed
     genai.configure(api_key="AIzaSyCC0ixjF5MwOyG_WTToz-VQR5oWdJoqggY")
-
 
     # Set up the model configuration for text generation
     generation_config = {
@@ -300,6 +307,13 @@ def multiple_resume_scanner():
         for category in ["HARASSMENT", "HATE_SPEECH", "SEXUALLY_EXPLICIT", "DANGEROUS_CONTENT"]
     ]
 
+    # Load English tokenizer, tagger, parser, NER, and word vectors for SpaCy
+    nlp = spacy.load("en_core_web_sm")
+
+    # Define a new matcher to find patterns of one or two proper nouns (potential names)
+    matcher = Matcher(nlp.vocab)
+    pattern = [{"POS": "PROPN"}, {"POS": "PROPN", "OP": "?"}]
+    matcher.add("NAME", [pattern])
 
     def generate_response_from_gemini(input_text):
         # Create a GenerativeModel instance with 'gemini-pro' as the model type
@@ -313,7 +327,6 @@ def multiple_resume_scanner():
         # Return the generated text
         return output.text
 
-
     def extract_text_from_pdf_file(uploaded_file):
         # Use PdfReader to read the text content from a PDF file
         pdf_reader = pdf.PdfReader(uploaded_file)
@@ -322,131 +335,338 @@ def multiple_resume_scanner():
             text_content += str(page.extract_text())
         return text_content
 
-
     def extract_text_from_docx_file(uploaded_file):
         # Use docx2txt to extract text from a DOCX file
         return docx2txt.process(uploaded_file)
 
-
-    # Function to extract candidate name from resume text
     def extract_candidate_name(resume_text):
-        # Regular expression to find candidate names
-        name_pattern = r'\b[A-Z][a-z]\b\s+\b[A-Z][a-z]\b'
-        
-        # Find all occurrences of the name pattern in the resume text
-        candidate_names = re.findall(name_pattern, resume_text)
-        
-        # If names are found, return the first name as the candidate name
-        if candidate_names:
-            return candidate_names[0]
+        # Extract names from resume text using SpaCy
+        doc = nlp(resume_text)
+        names = []
+        matches = matcher(doc)
+        for match_id, start, end in matches:
+            names.append(doc[start:end].text)
+        # If no names found, return "Candidate Name"
+        return names[0] if names else "Candidate Name"
+
+    def extract_candidate_phone_number(resume_text, default_country_code):
+        # Find all occurrences of phone numbers in the text
+        candidate_phones = phonenumbers.PhoneNumberMatcher(resume_text, default_country_code)
+
+        # Initialize a list to store formatted phone numbers
+        formatted_phones = []
+
+        # Iterate over the phone number matches
+        for match in candidate_phones:
+            # Get the phone number object
+            phone_number = match.number
+
+            # Format the phone number as a string
+            formatted_phone = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+
+            # Add the formatted phone number to the list
+            formatted_phones.append(formatted_phone)
+
+        # If phone numbers are found
+        if formatted_phones:
+            return formatted_phones
         else:
-            # If no name found, return a generic Indian name
-            return "Candidate Name"
+            return "Phone number not found"
+ 
+    def extract_github_links_from_pdf(uploaded_file):
+        try:
+            # Initialize a list to store extracted links
+            links = []
 
+            # Open the PDF file
+            pdf_document = fitz.open(file_path)
 
-    # Function to extract candidate phone number from resume text
-    def extract_candidate_phone_number(resume_text):
-        # Regular expression to find phone numbers
-        phone_pattern = r'(\b\d{10,12}\b|\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}\b)'
-        
-        # Find all occurrences of the phone number pattern in the resume text
-        candidate_phones = re.findall(phone_pattern, resume_text)
-        
-        # If phone numbers are found, return the first phone number
-        if candidate_phones:
-            return candidate_phones[0]
-        else:
-            # If no phone number found, return a generic Indian phone number
-            return "+91 XXXXXXXXXX"
+            # Iterate through each page of the PDF
+            for page_num in range(len(pdf_document)):
+                # Get the page object
+                page = pdf_document[page_num]
+                
+                # Extract links from the page
+                page_links = page.get_links()
+                
+                # Iterate through each link on the page
+                for link in page_links:
+                    # Get the URL of the link
+                    url = link.get("uri")
+                    # Check if the URL is a GitHub link
+                    if "github.com" in url:
+                        # Use regex to extract the username after "github.com/"
+                        match = re.search(r"github\.com/([^/]+)", url)
+                        if match:
+                            username = match.group(1)
+                            links.append(username)
 
-    selection_criteria_percentage=30
+            # Close the PDF document
+            pdf_document.close()
+
+            return links
+        except Exception as e:
+            # Handle any exceptions (e.g., file operations, PDF parsing)
+            print(f"Error: {e}")
+
+        return []
+
+    def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
+        # Implement this function to calculate the match percentage
+        # Placeholder implementation for now
+        return 0
+
     string_to_be_sent=" "
 
-    # Function to calculate job description match percentage
-    def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
-        # PROMPT TEMPLATE
-        input_prompt_template = """
-        As an experienced Applicant Tracking System (ATS) analyst,
-        with profound knowledge in technology, software engineering, data science, 
-        and big data engineering, your role involves evaluating resumes against job descriptions.
-        Recognizing the competitive job market, provide top-notch assistance for resume improvement.
-        Your goal is to analyze the resume against the given job description, 
-        assign a percentage match based on key criteria, and pinpoint missing keywords accurately.
-        resume:{text}
-        description:{job_description}
-        I want the response in one single string having the structure
-        {{"Job Description Match":"%", "Missing Keywords":""}}
-        """
+    if not job_description:
+        string_to_be_sent+="⚠️ Please provide the job description."
+    else:
+        if uploaded_file_from_form:
+            selected_candidates = []
+            no_candidates_meet_criteria = True
+            for  i in range(0,no_of_resumes):
+                file_path_here = os.path.join(app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'],uploaded_file_from_form['image_' + str(i)].filename)
+                if uploaded_file_from_form['image_'+str(i)].content_type == "application/pdf":
+                    with open(file_path_here, "rb") as pdf_file:
+                        resume_text = extract_text_from_pdf_file(pdf_file)
+                        print("Extracted PDF Text:", resume_text)  # Debugging statement
+                elif uploaded_file_from_form['image_'+str(i)].content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    with open(file_path_here, "rb") as docx_file:
+                        resume_text = extract_text_from_docx_file(docx_file)
+                        print("Extracted DOCX Text:", resume_text)  # Debugging statement
 
-         # Generate response from Gemini model
-        response_text = generate_response_from_gemini(input_prompt_template.format(text=resume_text, job_description=job_description))
+                # Extract candidate name
+                candidate_name = extract_candidate_name(resume_text)
 
-        # Extract Job Description Match percentage from the response
-        match_percentage_str = response_text.split('"Job Description Match":"')[1].split('"')[0]
+                # Extract GitHub links
+                github_links = extract_github_links_from_pdf(uploaded_file_from_form['image_'+str(i)])
 
-        # Check if match percentage is "N/A"
-        if match_percentage_str == "N/A":
-            return None
-
-        # Remove percentage symbol and convert to float
-        match_percentage = float(match_percentage_str.rstrip('%'))
-
-        return match_percentage
-
-
-    for i in range(0, no_of_resumes):
-        if not tech_stack:
-            return jsonify({"message": "⚠ Please provide the job description."}), 400
-        else:
-            if uploaded_file_from_form:
-                selected_candidates = []
-                no_candidates_meet_criteria = True
-                file_path_here = os.path.join(app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'],
-                                              uploaded_file_from_form['image_' + str(i)].filename)
-                for uploaded_file in uploaded_file_from_form:
-                    if uploaded_file_from_form.get('image_' + str(i)).content_type == "application/pdf":
-                        with open(file_path_here, "rb") as pdf_file:
-                            resume_text = extract_text_from_pdf_file(pdf_file)
-                            print("Extracted PDF Text:", resume_text)  # Debugging statement
-                    elif uploaded_file_from_form.get('image_' + str(i)).content_type == \
-                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                        with open(file_path_here, "rb") as docx_file:
-                            resume_text = extract_text_from_docx_file(docx_file)
-                            print("Extracted DOCX Text:", resume_text)  # Debugging statement
-
-                    # Calculate job description match percentage with the selected minimum passing score
-                    match_percentage = calculate_match_percentage(resume_text, tech_stack,
-                                                                  selection_criteria_percentage)
+                # Calculate job description match percentage
+                match_percentage = calculate_match_percentage(resume_text, job_description, minimum_passing_score)
 
                 # Check if candidate meets minimum score criteria
-                if match_percentage is not None and match_percentage >= selection_criteria_percentage:
-                    # Extract candidate name and phone number
-                    candidate_name = extract_candidate_name(resume_text)
-                    candidate_phone = extract_candidate_phone_number(resume_text)
+                if match_percentage is not None and match_percentage >= minimum_passing_score:
+                    # Extract candidate phone number
+                    candidate_phone = extract_candidate_phone_number(resume_text, "ZZ")  # Assuming ZZ as the default country code
 
                     # Append candidate details to the list of selected candidates
-                    selected_candidates.append((candidate_name, candidate_phone))
+                    selected_candidates.append((candidate_name, candidate_phone, github_links[0]))
                     no_candidates_meet_criteria = False
 
-        # Display selected candidates' names and phone numbers in columns with improved style
         if selected_candidates:
-            for i, (name, phone) in enumerate(selected_candidates, start=1):
-                string_to_be_sent+=name+" "+phone+" "
-                new_job=RecruiterResumeUploads(job_position=job_title,tech_stack=tech_stack,name=name,phone_number=phone)
+            db.session.query(BestResumes).delete()
+            db.session.commit()
+            for candidate in selected_candidates:
+                # Assuming 'db' is your SQLAlchemy database session
+                
+                new_job = BestResumes(
+                    job_position=job_title,
+                    tech_stack=tech_stack,
+                    name=candidate[0],
+                    phone_number=candidate[1][0],
+                    github_username=candidate[2]
+                )
                 try:
                     db.session.add(new_job)
                     db.session.commit()
                 except Exception as e:
-                    return ({"message":str(e)},400)
-            return jsonify({"message": "Resume Processed successfully","stringGotten":string_to_be_sent+job_title+tech_stack}), 200
-                
+                    # Rollback changes in case of an error
+                    db.session.rollback()
+                    print(f"Error inserting data into database: {e}")
+        
         else:
-            return jsonify({"message":f"🛑 No candidates meet the minimum score criteria ({selection_criteria_percentage}% or above).","stringGotten":string_to_be_sent+job_title+tech_stack})
+           return jsonify({"message":f"🛑 No candidates meet the minimum score criteria ({minimum_passing_score}% or above).","stringGotten":"Nothing"}),200
+
+    return jsonify({"message": "Files uploaded successfully","stringGotten":selected_candidates}), 200
+
+
+
+# # Scanning multiple resumes WORKING PREVIOUS THINGY
+# @app.route("/recruiter_resume_scan", methods=['POST'])
+# def multiple_resume_scanner():
+#     job_title = request.form.get('jobTitle')
+#     tech_stack = request.form.get('techStack')
+#     no_of_resumes=int(request.form.get('noOfResumes'))
+
+#     if 'image_0' not in request.files:
+#         return jsonify({"error": "No file provided"}), 400
+
+#     uploaded_file_from_form = request.files
+#     if uploaded_file_from_form['image_0'].filename == '':
+#         return jsonify({"error": "No file selected"}), 400
+
+#     for i in range(0,no_of_resumes):
+#         # Save the file to the upload folder
+#         file_path = os.path.join(app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'], uploaded_file_from_form['image_'+str(i)].filename)
+#         uploaded_file_from_form['image_'+str(i)].save(file_path)
+
+#     # Process the uploaded file here if needed
+#     genai.configure(api_key="AIzaSyCC0ixjF5MwOyG_WTToz-VQR5oWdJoqggY")
+
+
+#     # Set up the model configuration for text generation
+#     generation_config = {
+#         "temperature": 0.4,
+#         "top_p": 1,
+#         "top_k": 32,
+#         "max_output_tokens": 4096,
+#     }
+
+#     # Define safety settings for content generation
+#     safety_settings = [
+#         {"category": f"HARM_CATEGORY_{category}", "threshold": "BLOCK_MEDIUM_AND_ABOVE"}
+#         for category in ["HARASSMENT", "HATE_SPEECH", "SEXUALLY_EXPLICIT", "DANGEROUS_CONTENT"]
+#     ]
+
+
+#     def generate_response_from_gemini(input_text):
+#         # Create a GenerativeModel instance with 'gemini-pro' as the model type
+#         llm = genai.GenerativeModel(
+#             model_name="gemini-pro",
+#             generation_config=generation_config,
+#             safety_settings=safety_settings,
+#         )
+#         # Generate content based on the input text
+#         output = llm.generate_content(input_text)
+#         # Return the generated text
+#         return output.text
+
+
+#     def extract_text_from_pdf_file(uploaded_file):
+#         # Use PdfReader to read the text content from a PDF file
+#         pdf_reader = pdf.PdfReader(uploaded_file)
+#         text_content = ""
+#         for page in pdf_reader.pages:
+#             text_content += str(page.extract_text())
+#         return text_content
+
+
+#     def extract_text_from_docx_file(uploaded_file):
+#         # Use docx2txt to extract text from a DOCX file
+#         return docx2txt.process(uploaded_file)
+
+
+#     # Function to extract candidate name from resume text
+#     def extract_candidate_name(resume_text):
+#         # Regular expression to find candidate names
+#         name_pattern = r'\b[A-Z][a-z]\b\s+\b[A-Z][a-z]\b'
+        
+#         # Find all occurrences of the name pattern in the resume text
+#         candidate_names = re.findall(name_pattern, resume_text)
+        
+#         # If names are found, return the first name as the candidate name
+#         if candidate_names:
+#             return candidate_names[0]
+#         else:
+#             # If no name found, return a generic Indian name
+#             return "Candidate Name"
+
+
+#     # Function to extract candidate phone number from resume text
+#     def extract_candidate_phone_number(resume_text):
+#         # Regular expression to find phone numbers
+#         phone_pattern = r'(\b\d{10,12}\b|\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}\b)'
+        
+#         # Find all occurrences of the phone number pattern in the resume text
+#         candidate_phones = re.findall(phone_pattern, resume_text)
+        
+#         # If phone numbers are found, return the first phone number
+#         if candidate_phones:
+#             return candidate_phones[0]
+#         else:
+#             # If no phone number found, return a generic Indian phone number
+#             return "+91 XXXXXXXXXX"
+
+#     selection_criteria_percentage=30
+#     string_to_be_sent=" "
+
+#     # Function to calculate job description match percentage
+#     def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
+#         # PROMPT TEMPLATE
+#         input_prompt_template = """
+#         As an experienced Applicant Tracking System (ATS) analyst,
+#         with profound knowledge in technology, software engineering, data science, 
+#         and big data engineering, your role involves evaluating resumes against job descriptions.
+#         Recognizing the competitive job market, provide top-notch assistance for resume improvement.
+#         Your goal is to analyze the resume against the given job description, 
+#         assign a percentage match based on key criteria, and pinpoint missing keywords accurately.
+#         resume:{text}
+#         description:{job_description}
+#         I want the response in one single string having the structure
+#         {{"Job Description Match":"%", "Missing Keywords":""}}
+#         """
+
+#          # Generate response from Gemini model
+#         response_text = generate_response_from_gemini(input_prompt_template.format(text=resume_text, job_description=job_description))
+
+#         # Extract Job Description Match percentage from the response
+#         match_percentage_str = response_text.split('"Job Description Match":"')[1].split('"')[0]
+
+#         # Check if match percentage is "N/A"
+#         if match_percentage_str == "N/A":
+#             return None
+
+#         # Remove percentage symbol and convert to float
+#         match_percentage = float(match_percentage_str.rstrip('%'))
+
+#         return match_percentage
+
+#     resume_text=""
     
-    return jsonify({"message": "Error Processing Resumes","stringGotten":string_to_be_sent+job_title+tech_stack}), 200
+#     if not tech_stack:
+#         return jsonify({"message": "⚠ Please provide the job description."}), 400
+#     else:
+#         if uploaded_file_from_form:
+#             selected_candidates = []
+#             no_candidates_meet_criteria = True
+#             for i in range(0, no_of_resumes):
+#                 file_path_here = os.path.join(app.config['MULTIPLE_RESUMES_UPLOAD_FOLDER'],
+#                                             uploaded_file_from_form['image_' + str(i)].filename)
+#                 if uploaded_file_from_form.get('image_' + str(i)).content_type == "application/pdf":
+#                     with open(file_path_here, "rb") as pdf_file:
+#                         resume_text = extract_text_from_pdf_file(pdf_file)
+#                         print("Extracted PDF Text:", resume_text)  # Debugging statement
+#                 elif uploaded_file_from_form.get('image_' + str(i)).content_type == \
+#                         "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+#                     with open(file_path_here, "rb") as docx_file:
+#                         resume_text = extract_text_from_docx_file(docx_file)
+#                         print("Extracted DOCX Text:", resume_text)  # Debugging statement
+
+#                 # Calculate job description match percentage with the selected minimum passing score
+#             match_percentage = calculate_match_percentage(resume_text, tech_stack,
+#                                                                 selection_criteria_percentage)
+
+#             # Check if candidate meets minimum score criteria
+#             if match_percentage is not None and match_percentage >= selection_criteria_percentage:
+#                 # Extract candidate name and phone number
+#                 candidate_name = extract_candidate_name(resume_text)
+#                 candidate_phone = extract_candidate_phone_number(resume_text)
+
+#                 # Append candidate details to the list of selected candidates
+#                 selected_candidates.append((candidate_name, candidate_phone))
+#                 no_candidates_meet_criteria = False
+
+#         # Display selected candidates' names and phone numbers in columns with improved style
+#         if selected_candidates:
+#             for i, (name, phone) in enumerate(selected_candidates, start=1):
+#                 string_to_be_sent+=name+" "+phone+" "
+#                 new_job=RecruiterResumeUploads(job_position=job_title,tech_stack=tech_stack,name=name,phone_number=phone)
+#                 try:
+#                     db.session.add(new_job)
+#                     db.session.commit()
+#                 except Exception as e:
+#                     return ({"message":str(e)},400)
+#             return jsonify({"message": "Resume Processed successfully","stringGotten":string_to_be_sent+job_title+tech_stack}), 200
+                
+#         else:
+#             return jsonify({"message":f"🛑 No candidates meet the minimum score criteria ({selection_criteria_percentage}% or above).","stringGotten":string_to_be_sent+job_title+tech_stack})
 
 
-
+@app.route('/multipleresumescore',methods=['GET'])
+def get_best_resumes():
+    jobs=BestResumes.query.all()
+    json_jobs=list(map(lambda job:job.to_json(),jobs))
+    return jsonify(json_jobs)
 
 if __name__ == "__main__":
     with app.app_context():

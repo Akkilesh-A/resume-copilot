@@ -11,7 +11,7 @@ function AdminJobsList({jobs}){
 
 
     return (
-    <div className='flex flex-wrap'>
+    <div className='flex '>
         {jobs.map((job) => {
                     return (
                         <div className='mx-4'>

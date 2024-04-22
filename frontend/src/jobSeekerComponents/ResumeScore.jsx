@@ -32,7 +32,7 @@ const ResumeScore = () => {
                             </p>
                             <div className='flex flex-col justify-center items-center'>
                                 <p><span className='font-bold'>Score: </span> {score[score.length - 1].name}</p>
-                                <p><span className='font-bold'>Result: </span> {score[score.length - 1].phoneNumber} should be learnt</p>
+                                <p><span className='font-bold'>Result: </span> {score[score.length - 1].phoneNumber}</p>
                             </div>
                         </div>
                     </div>

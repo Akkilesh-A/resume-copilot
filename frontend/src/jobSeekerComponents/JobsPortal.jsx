@@ -22,18 +22,19 @@ const JobsPortal = () => {
 
   return (
     <div className='mt-24 mx-8 flex flex-col'>
-        <h1 className='text-[2.5em] font-bold text-center'>Job Openings</h1>
+        <div className='flex m-auto justify-center items-center '>
+            <h1 className='text-[2.5em] font-bold text-center'>Job Openings</h1>
+            <div className='w-[50vw] text-center flex justify-end '>
+                <Link to="/resumescannerform">
+                    <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
+                    <h1 className='text-xl'>Get Your Resume Score 🚀</h1> 
+                    </button> 
+                </Link>
+            </div>
+        </div>
         <div className='h-[50vh]'>
             <JobsList jobs={jobs} updateCallback={refreshJobsPortal}/>
-        </div>
-        <div className='text-'>*Click on <span className='font-semibold'>Copy to Clipboard</span> to copy the Tech Stack!</div>
-        <div className='text-center flex justify-center '>
-            <Link to="/resumescannerform">
-                <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
-                <h1 className='text-xl'>Get Your Resume Score 🚀</h1> 
-                </button> 
-            </Link>
-        </div>
+        </div>       
     </div>
 
   )

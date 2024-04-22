@@ -13,6 +13,7 @@ import GitHubStatsForm from "./jobSeekerComponents/GitHubStatsForm"
 import ResumeScanner from "./jobSeekerComponents/ResumeScanner"
 import ResumeScore from "./jobSeekerComponents/ResumeScore"
 import MultipleResumeScanner from "./recruiterComponents/MultipleResumeScanner"
+import BestResumes from "./recruiterComponents/BestResumes"
 
 function App() {
 
@@ -33,6 +34,8 @@ function App() {
         <Route path="/resumescannerform" element={<ResumeScanner />} />
         <Route path="/resumescore" element={<ResumeScore />} />
         <Route path="/multipleresumescanner" element={<MultipleResumeScanner />} />
+        <Route path="/bestresumes" element={<BestResumes />} />
+        <Route path="/thebestresumes" element={<BestResumes />} />
       </Routes>
     </>
   )
