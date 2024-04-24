@@ -57,11 +57,11 @@ function AdminJobsList({jobs,updateCallback, onUpdate}){
     }
 
   return (
-    <div className='flex'>
+    <div className='flex flex-wrap'>
         {jobs.map((job) => {
                     return (
                     
-                        <div className='mx-4'>
+                        <div className='mx-4 w-[25vw] mb-64'>
                             <form onSubmit={handleSubmit}>
                                 <div className=' my-4 h-[5vh] flex flex-col items-center'>
                                     <div className='flex-col bg-gray-300  hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>
@@ -75,12 +75,12 @@ function AdminJobsList({jobs,updateCallback, onUpdate}){
                                             <button onClick={()=> onDelete(job.id)} className='hover:bg-black hover:fill-white hover:text-white flex justify-center items-center mr-2 rounded px-2 p-1 border-2 border-black font-semibold text-xs'>
                                                 Delete
                                             </button>
-                                            <button className='hover:bg-black hover:fill-white hover:text-white flex justify-center items-center mr-2 rounded px-2 p-1 border-2 border-black font-semibold text-xs'>
+                                            {/* <button className='hover:bg-black hover:fill-white hover:text-white flex justify-center items-center mr-2 rounded px-2 p-1 border-2 border-black font-semibold text-xs'>
                                                 Update
                                             </button>
                                             <Link to={"/resumescanned/"+job.jobTitle+"&"+job.techStack} >
                                                 <button className='hover:bg-black hover:fill-white hover:text-white flex justify-center items-center rounded px-2 p-1 border-2 border-black font-semibold text-xs' type="submit">Resumes</button>
-                                            </Link>
+                                            </Link> */}
                                         </div>
                                         
                                     </div>

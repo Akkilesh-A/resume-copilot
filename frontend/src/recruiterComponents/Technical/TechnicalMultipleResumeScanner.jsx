@@ -24,7 +24,7 @@ function TechnicalMultipleResumeScanner() {
         formData.append('noOfResumes',images.length)
         formData.append('match',match)
 
-        const url = "http://localhost:5000/non_technical_recruiter_resume_scan"; // Ensure this matches your Flask route
+        const url = "http://localhost:5000/recruiter_resume_scan"; 
         const options = {
             method: 'POST',
             body: formData
@@ -37,8 +37,8 @@ function TechnicalMultipleResumeScanner() {
             if (response.ok) {
                 alert(data.message);
                 alert(data.stringGotten);
-                if(stringGotten!="Nothing"){
-                    window.location.href="/bestresumes"
+                if(data.stringGotten!="Nothing"){
+                    window.location.href="/technicalbestresumes"
                 }
                 
             } else {

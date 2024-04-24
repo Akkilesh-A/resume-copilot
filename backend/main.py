@@ -1,6 +1,6 @@
 from flask import request,jsonify,render_template
 from config import app,db
-from models import Jobs,AdminLogin,JobSeekerResumeScore,BestResumes,NonTechnicalBestResumes
+from models import Jobs,AdminLogin,JobSeekerResumeScore,NewBestResumes,NonTechnicalBestResumes
 import csv
 import google.generativeai as genai
 import os
@@ -617,9 +617,36 @@ def multiple_resume_scanner():
         return []
 
     def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
-        # Implement this function to calculate the match percentage
-        # Placeholder implementation for now
-        return 0
+        # Search for the "Skills" heading in the resume text
+        skills_heading_match = re.search(r'\bSkills\b', resume_text, flags=re.IGNORECASE)
+        
+        if skills_heading_match:
+            # Get the index of the "Skills" heading
+            skills_heading_index = skills_heading_match.end()
+            
+            # Extract the text after the "Skills" heading
+            text_after_skills = resume_text[skills_heading_index:]
+            
+            # Convert the job description and resume text to lowercase for case-insensitive matching
+            job_description_lower = job_description.lower()
+            text_after_skills_lower = text_after_skills.lower()
+            
+            # Split the job description and resume text into words
+            job_description_words = set(re.findall(r'\b\w+\b', job_description_lower))
+            resume_text_words = set(re.findall(r'\b\w+\b', text_after_skills_lower))
+            
+            # Calculate the number of matching words
+            matching_words_count = len(job_description_words.intersection(resume_text_words))
+            
+            # Calculate the match percentage
+            total_job_description_words = len(job_description_words)
+            match_percentage = (matching_words_count / total_job_description_words) * 100
+            
+            # Return the match percentage
+            return match_percentage if match_percentage is not None else 0
+        else:
+            # Return 0 if "Skills" section is not found
+            return 0
 
     string_to_be_sent=" "
 
@@ -644,7 +671,7 @@ def multiple_resume_scanner():
                 candidate_name = extract_candidate_name(resume_text)
 
                 # Extract GitHub links
-                # github_links = extract_github_links_from_pdf(uploaded_file_from_form['image_'+str(i)])
+                github_links = extract_github_links_from_pdf(uploaded_file_from_form['image_'+str(i)])
 
                 # Calculate job description match percentage
                 match_percentage = calculate_match_percentage(resume_text, job_description, minimum_passing_score)
@@ -655,23 +682,48 @@ def multiple_resume_scanner():
                     candidate_phone = extract_candidate_phone_number(resume_text, "ZZ")  # Assuming ZZ as the default country code
 
                     # Append candidate details to the list of selected candidates
-                    # if not github_links[0]:
-                    #     github_links[0]="No GitHub Username Found"
-                    # selected_candidates.append((candidate_name, candidate_phone, github_links[0]))
-                    selected_candidates.append((candidate_name, candidate_phone))
+                    if not github_links[0]:
+                        github_links[0]="No GitHub Username Found"
+                    selected_candidates.append((candidate_name, candidate_phone, github_links[0]))
+                    # selected_candidates.append((candidate_name, candidate_phone))
 
                     no_candidates_meet_criteria = False
+        
+        job_position_to_send=""
+        tech_stack_to_send=""
+        name_to_send=""
+        phone_number_to_send=""
+        github_username_to_send=""
 
+        # if selected_candidates!=[]:
+        #     for candidate in selected_candidates: 
+        #         job_position_to_send+=job_title+","
+        #         tech_stack_to_send+=tech_stack+","
+        #         name_to_send+=candidate[0]+","
+        #         phone_number_to_send+=candidate[1][0]+","
+        #         github_username_to_send+=github_links[0]+","
+            
+        #     new_job =   NewBestResumes(
+        #             job_position=job_position_to_send,
+        #             tech_stack=tech_stack_to_send,
+        #             name=name_to_send,
+        #             phone_number=phone_number_to_send,
+        #             github_username=github_username_to_send
+        #     )
+        #     db.session.add(new_job)
+        #     db.session.commit()   
         if selected_candidates!=[]:
             for candidate in selected_candidates: 
-                new_job = NonTechnicalBestResumes(
+                new_job =   NewBestResumes(
                     job_position=job_title,
                     tech_stack=tech_stack,
                     name=candidate[0],
-                    phone_number=candidate[1][0]
+                    phone_number=candidate[1][0],
+                    github_username=github_links[0]
                 )
                 db.session.add(new_job)
-                db.session.commit()
+                db.session.commit()              
+            
         else:
            return jsonify({"message":f"🛑 No candidates meet the minimum score criteria ({minimum_passing_score}% or above).","stringGotten":"Nothing"}),200
 
@@ -683,7 +735,7 @@ def multiple_resume_scanner():
 
 @app.route('/multipleresumescore',methods=['GET'])
 def get_best_resumes():
-    jobs=BestResumes.query.all()
+    jobs=NewBestResumes.query.all()
     json_jobs=list(map(lambda job:job.to_json(),jobs))
     return jsonify(json_jobs)
 

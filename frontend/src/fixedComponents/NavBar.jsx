@@ -12,14 +12,16 @@ const NavBar = () => {
                 </div>
             </Link>
             <div>
-                <ul className='flex font-semibold'>
-                    <li className='mx-8'><Link to="/">Home 🏠</Link></li>
+                <ul className='flex font-semibold items-center '>
+                    <li className='mx-8'><Link to="/">Home <span className='text-2xl'>🏠</span></Link></li>
                     <li>|</li>
-                    <li className='mx-8'><a href="/resumescannerform">Resume Score 🚀</a></li>
+                    <li className='mx-8'><a href="/adminlogin">Recruiter Login <span className='text-2xl'>🧑🏻‍💻</span></a></li>
                     <li>|</li>
-                    <li className='mx-8'><Link to="/githubstatsform">GitHub Stats 🧑🏻‍💻</Link></li>
+                    <li className='mx-8'><a href="/resumescannerform">Resume Score <span className='text-2xl'>🚀</span></a></li>
                     <li>|</li>
-                    <li className='mx-8'><Link to="/about">About 🤩</Link></li>
+                    <li className='mx-8'><Link to="/githubstatsform">GitHub Stats <span className='text-2xl'>🧑🏻‍🎓</span></Link></li>
+                    <li>|</li>
+                    <li className='mx-8'><Link to="/about">About <span className='text-2xl'>🤩</span></Link></li>
                 </ul>
             </div>
         </div>
