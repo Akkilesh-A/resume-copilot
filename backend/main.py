@@ -233,22 +233,24 @@ def resume_scanner():
 
             # Extract Job Description Match percentage from the response
             match_percentage_str = response_text.split('"Job Description Match":"')[1].split('"')[0]
+            
+            result=" "
+            score=" "
 
             if match_percentage_str == 'N/A':
-                score=match_percentage_str+" Sorry yours Skills do not match with the requirements 😣"
+                score+=match_percentage_str+" Sorry yours Skills do not match with the requirements 😣"
                 # Get missing keywords from the job description and resume
                 missing_keywords = get_missing_keywords(tech_stack, resume_text)
-                result=missing_keywords
+                result+=missing_keywords
             
             else:
             # Remove percentage symbol and convert to float
                 match_percentage = float(match_percentage_str.rstrip('%'))
-                score=match_percentage
 
                 if match_percentage >= 20:
-                    result=f" Your Resume Match is {match_percentage_str}😊 - This resume matches the job description!"  # Highlight in green for a good match
+                    result+=f" Your Resume Match is {match_percentage_str}😊 - This resume matches the job description!"  # Highlight in green for a good match
                 else:
-                    result=f" Match {match_percentage_str}😭 - This resume does not match the job description."  # Highlight in red for a poor match
+                    result+=f" Match {match_percentage_str}😭 - This resume does not match the job description."  # Highlight in red for a poor match
     
     new_job=JobSeekerResumeScore(job_position=job_title,tech_stack=tech_stack,name=score,phone_number=result)
 
@@ -728,10 +730,6 @@ def multiple_resume_scanner():
            return jsonify({"message":f"🛑 No candidates meet the minimum score criteria ({minimum_passing_score}% or above).","stringGotten":"Nothing"}),200
 
     return jsonify({"message": "Files uploaded successfully","stringGotten":selected_candidates}), 200
-
-
-
-
 
 @app.route('/multipleresumescore',methods=['GET'])
 def get_best_resumes():

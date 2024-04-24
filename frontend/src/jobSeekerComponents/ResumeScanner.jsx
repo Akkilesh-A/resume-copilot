@@ -13,8 +13,6 @@ function ResumeScanner() {
     async function handleApi() {
         const formData = new FormData();
         formData.append('image', image);
-        // formData.append('jobTitle',jobTitle)
-        // formData.append('techStack',techStack)
         formData.append('jobTitle', jobTitle);
         formData.append('techStack', techStack);
 
