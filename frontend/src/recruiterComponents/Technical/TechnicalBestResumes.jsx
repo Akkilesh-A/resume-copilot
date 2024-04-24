@@ -19,7 +19,7 @@ const BestResumes = () => {
   return (
     <div className='mt-24 mx-8'>
         <div className='flex flex-col justify-center items-center'>
-            <h1 className='mx-8 text-[3rem] font-extrabold'>Resume Score!</h1>
+            <h1 className='mx-8 text-[3rem] font-extrabold'>Best Tehnical Resumes!</h1>
             {/* <div className='mb-4 flex '>
                 <h1 className='mx-4 text-[2em]'>
                     <span className='font-bold'>Job Position:</span> {score[0].jobPosition}

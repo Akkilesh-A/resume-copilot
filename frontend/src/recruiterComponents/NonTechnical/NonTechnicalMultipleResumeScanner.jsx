@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import Switch from "react-switch";
 
 function MultipleResumeScanner() {
     const [images, setImages] = useState([]);
     const [jobTitle,setJobTitle]=useState("")
     const [techStack,setTechStack]=useState("")
     const [match,setMatch]=useState(0)
+    const [github,setGitHub] = useState(false)
 
     function handleImage(e) {
         const files = Array.from(e.target.files); // Convert FileList to array
@@ -22,7 +24,7 @@ function MultipleResumeScanner() {
         formData.append('noOfResumes',images.length)
         formData.append('match',match)
 
-        const url = "http://localhost:5000/recruiter_resume_scan"; // Ensure this matches your Flask route
+        const url = "http://localhost:5000/non_technical_recruiter_resume_scan"; // Ensure this matches your Flask route
         const options = {
             method: 'POST',
             body: formData
@@ -33,9 +35,9 @@ function MultipleResumeScanner() {
             const data = await response.json();
 
             if (response.ok) {
-                // alert(data.message);
-                // alert(data.stringGotten);
-                window.location.href="/bestresumes"
+                alert(data.message);
+                alert(data.stringGotten);
+                window.location.href="/nontechnicalbestresumes"
                 
             } else {
                 alert(data.error || 'Failed to process files');
@@ -66,12 +68,16 @@ function MultipleResumeScanner() {
                         <td><input type='file' multiple name='file'className='border-2 border-black p-2 rounded w-[20vw]' onChange={handleImage} /></td>
                     </tr>
                     {/* <tr>
+                        <th className='p-4'>GitHub Stats</th>
+                        <td><Switch checked={github} onChange={(e)=>{setGitHub(e.target.value)}}/></td>
+                    </tr> */}
+                     <tr>
                         <th>Match Percentage Criteria</th>
                         <td className='flex items-center justify-center'>
                             <input className='border-2 border-black p-2 rounded w-[15vw]' min={0} max={100} step={1} type="range" name="match" id='match' value={match} onChange={(e) => setMatch(e.target.value)} />
                             <p className='ml-1'>{match}%</p>
                         </td>
-                    </tr> */}
+                    </tr> 
                 </table> 
                 <div className='flex justify-center' colSpan={2}>
                     <button onClick={handleApi} className='mt-4 hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold' >

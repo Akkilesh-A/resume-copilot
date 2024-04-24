@@ -12,8 +12,13 @@ import About from "./fixedComponents/About"
 import GitHubStatsForm from "./jobSeekerComponents/GitHubStatsForm"
 import ResumeScanner from "./jobSeekerComponents/ResumeScanner"
 import ResumeScore from "./jobSeekerComponents/ResumeScore"
-import MultipleResumeScanner from "./recruiterComponents/MultipleResumeScanner"
-import BestResumes from "./recruiterComponents/BestResumes"
+import MultipleResumeScanner from "./recruiterComponents/NonTechnical/NonTechnicalMultipleResumeScanner"
+import BestResumes from "./recruiterComponents/Technical/TechnicalBestResumes"
+import Options from "./recruiterComponents/Options"
+import NonTechnicalBestResumes from "./recruiterComponents/NonTechnical/NonTechnicalBestResumes"
+import TechnicalBestResumes from "./recruiterComponents/Technical/TechnicalBestResumes"
+import TechnicalMultipleResumeScanner from "./recruiterComponents/Technical/TechnicalMultipleResumeScanner"
+import NonTechnicalMultipleResumeScanner from "./recruiterComponents/NonTechnical/NonTechnicalMultipleResumeScanner"
 
 function App() {
 
@@ -33,9 +38,13 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/resumescannerform" element={<ResumeScanner />} />
         <Route path="/resumescore" element={<ResumeScore />} />
-        <Route path="/multipleresumescanner" element={<MultipleResumeScanner />} />
-        <Route path="/bestresumes" element={<BestResumes />} />
-        <Route path="/thebestresumes" element={<BestResumes />} />
+
+        {/* Recruiter Paths */}
+        <Route path="/options" element={<Options />} />
+        <Route path="/technical" element={<TechnicalMultipleResumeScanner />} />
+        <Route path="/technicalbestresumes" element={<TechnicalBestResumes />} />
+        <Route path="/nontechnical" element={<NonTechnicalMultipleResumeScanner />} />
+        <Route path="/nontechnicalbestresumes" element={<NonTechnicalBestResumes />} />
       </Routes>
     </>
   )

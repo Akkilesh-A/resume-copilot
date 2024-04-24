@@ -17,11 +17,12 @@ const ResumeScore = () => {
     }
 
   return (
-    <div>
-        <h1 className='mt-24 mx-8'>Resume Score!</h1>
+    <div className='mt-24 mx-8'>
+        <h1 className='text-[3rem] font-bold text-center' > Your Resume Score!</h1>
+        <div className='flex justify-center '>
         {
             score.length > 0 && (
-                <div className='mx-4'>
+                <div className='mx-4 w-[40vw]'>
                     <div className='my-4 h-[5vh] flex flex-col items-center'>
                         <div className='flex-col bg-gray-300 hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>
                             <h1 className='mx-4 text-[1em] font-semibold '>
@@ -39,6 +40,7 @@ const ResumeScore = () => {
                 </div>
             )
         }
+        </div>
     </div>
   )
 }

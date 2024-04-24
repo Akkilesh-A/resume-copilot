@@ -57,3 +57,19 @@ class BestResumes(db.Model):
             "phoneNumber":self.phone_number,
             "githubUsername":self.github_username         
         }
+
+class NonTechnicalBestResumes(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    job_position=db.Column(db.String(100), nullable=False)
+    tech_stack=db.Column(db.String(300), nullable=False)
+    name=db.Column(db.String(100), nullable=False)
+    phone_number=db.Column(db.String(15), nullable=False)
+
+    def to_json(self):
+        return {
+            "id":self.id,
+            "jobPosition":self.job_position,
+            "techStack":self.tech_stack,
+            "name":self.name,
+            "phoneNumber":self.phone_number
+        }
