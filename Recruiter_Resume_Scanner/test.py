@@ -135,9 +135,36 @@ def extract_github_links_from_pdf(uploaded_file):
     return links
 
 def calculate_match_percentage(resume_text, job_description, minimum_passing_score):
-    # Implement this function to calculate the match percentage
-    # Placeholder implementation for now
-    return 0
+    # Search for the "Skills" heading in the resume text
+    skills_heading_match = re.search(r'\bSkills\b', resume_text, flags=re.IGNORECASE)
+    
+    if skills_heading_match:
+        # Get the index of the "Skills" heading
+        skills_heading_index = skills_heading_match.end()
+        
+        # Extract the text after the "Skills" heading
+        text_after_skills = resume_text[skills_heading_index:]
+        
+        # Convert the job description and resume text to lowercase for case-insensitive matching
+        job_description_lower = job_description.lower()
+        text_after_skills_lower = text_after_skills.lower()
+        
+        # Split the job description and resume text into words
+        job_description_words = set(re.findall(r'\b\w+\b', job_description_lower))
+        resume_text_words = set(re.findall(r'\b\w+\b', text_after_skills_lower))
+        
+        # Calculate the number of matching words
+        matching_words_count = len(job_description_words.intersection(resume_text_words))
+        
+        # Calculate the match percentage
+        total_job_description_words = len(job_description_words)
+        match_percentage = (matching_words_count / total_job_description_words) * 100
+        
+        # Return the match percentage
+        return match_percentage if match_percentage is not None else 0
+    else:
+        # Return 0 if "Skills" section is not found
+        return 0
 
 # Streamlit app
 # Initialize Streamlit app
