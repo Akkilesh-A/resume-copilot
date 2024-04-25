@@ -1,3 +1,4 @@
+![favicon-32x32](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/59cae323-eeac-41bd-bf43-066f7d7fc867)
 # Resume Filtering Web App with ML resume score generation
 
 ## Tech Stack Used:
