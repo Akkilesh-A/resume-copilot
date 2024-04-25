@@ -1,13 +1,60 @@
-# ![android-chrome-192x192](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/d80fe3de-220f-4b83-a88c-7faada8d08ed) Resume Copilot
+<h1 align="center" id="title">Resume Copilot</h1>
 
-![favicon-32x32](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/59cae323-eeac-41bd-bf43-066f7d7fc867)
-# Resume Filtering Web App with ML resume score generation
+<p align="center"><img src="https://socialify.git.ci/Akkilesh-A/resume-copilot/image?description=1&amp;descriptionEditable=Here%20To%20lessen%20your%20burden!&amp;font=Source%20Code%20Pro&amp;language=1&amp;name=1&amp;pattern=Formal%20Invitation&amp;stargazers=1&amp;theme=Light" alt="project-image"></p>
+
+<p id="description">Resume Filtering with GenAI | Resume Score Generation | GitHub Stats</p>
 
 ## Tech Stack Used:
 ### 🤩Frontend - React.js, Tailwind CSS
 ### 😐Backend - Pyhton, Flask
-### 😶ML - Python, Jupyter Notebook 
+### 😶ML - Python
 
-## To run the Web App:
-### 📂frontend - <code> npm run dev </code> 
-### 📂backend - <code> python main.py </code> 
+<h2>Project Screenshots:</h2>
+
+<img src="" alt="project-screenshot" width="400" height="400/">
+
+  
+  
+<h2>🧐 Features</h2>
+
+Here're some of the project's best features:
+
+*   Resume Filtering Using GenAI
+*   GitHub Stats generator
+*   Resume Score Generator
+*   Name Phone Number & GitHub Username extraction
+*   Missing Keywords Generator
+
+<h2>🛠️ Installation Steps:</h2>
+
+<p>1. Navigate to ."/frontend"</p>
+
+```
+npm install 
+```
+
+```
+npm run dev
+```
+
+<p>3. Navigate to "./backend"</p>
+
+```
+python main.py
+```
+
+  
+  
+<h2>💻 Built with</h2>
+
+Technologies used in the project:
+
+*   React
+*   Tailwind CSS
+*   Python
+*   Flask
+*   SQLite
+
+<h2>💖Like my work?</h2>
+
+Contact Us!<p>akkilalagar05@gmail.com</p>
