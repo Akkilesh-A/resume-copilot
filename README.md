@@ -15,7 +15,7 @@
 
 <h4>🧑🏻‍🎓 Job Seeker Path</h4>
 <h6>Jobs Portal</h6>
-![JobSeekerJobsPortal](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/4fc49f99-5821-4480-aeaf-998d3088d580)
+<img url="https://github.com/Akkilesh-A/resume-copilot/assets/136828513/4fc49f99-5821-4480-aeaf-998d3088d580" alt="homepage" />
 
 <h6>Resume Scanner</h6>
 ![JobSeekerResumeScanner](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/7e0444c2-4653-410b-ab8a-36d97deb3bc9)
