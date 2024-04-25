@@ -4,16 +4,16 @@
 
 <p id="description">Resume Filtering with GenAI | Resume Score Generation | GitHub Stats</p>
 
-## Tech Stack Used:
-### 🤩Frontend - React.js, Tailwind CSS
-### 😐Backend - Pyhton, Flask
-### 😶ML - Python
-
 <h2>Project Screenshots:</h2>
 
-<img src="" alt="project-screenshot" width="400" height="400/">
+<h4>Home Page 🏡</h4>
+<img src="frontend\public\HomePage.png" alt="project-screenshot">
 
-  
+<h4>Job Seeker Portal 🧑🏻‍💻</h4>
+<img src="frontend\public\JobSeekerJobsPortal.png" alt="project-screenshot">
+
+<h4>Job Seeker Resume Score Generation 🧑🏻‍🎓</h4>
+<img src="frontend\public\JobSeekerResumeScanner.png" alt="project-screenshot">
   
 <h2>🧐 Features</h2>
 
@@ -48,12 +48,20 @@ python main.py
 <h2>💻 Built with</h2>
 
 Technologies used in the project:
+<h4>Frontend</h4>
 
 *   React
 *   Tailwind CSS
-*   Python
+
+<h4>Backend</h4>
+
 *   Flask
 *   SQLite
+
+<h4>GenAI and ML</h4>
+
+*   Python
+*   GenAI(Google Gemini) 
 
 <h2>💖Like our work?</h2>
 
