@@ -11,10 +11,10 @@ function AdminJobsList({jobs}){
 
 
     return (
-    <div className='flex w-[30vw] flex-wrap'>
+    <div className='flex mt-8 justify-center flex-wrap'>
         {jobs.map((job) => {
                     return (
-                        <div className='mx-4'>
+                        <div className='w-[30vw] h-[35vh] mx-4'>
                             <div className='my-4 h-[5vh] flex flex-col items-center'>
                                 <div className='flex-col bg-gray-300  hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>
                                     <h1 className='mx-4 text-[1em] font-semibold '>
