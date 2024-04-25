@@ -1,3 +1,5 @@
+![android-chrome-512x512](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/5fe5d281-4a83-4bb4-bc13-e2c8b66c8932) #Resume Copilot
+
 ![favicon-32x32](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/59cae323-eeac-41bd-bf43-066f7d7fc867)
 # Resume Filtering Web App with ML resume score generation
 
