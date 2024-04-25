@@ -55,6 +55,11 @@ Technologies used in the project:
 *   Flask
 *   SQLite
 
-<h2>💖Like my work?</h2>
+<h2>💖Like our work?</h2>
 
-Contact Us!<p>akkilalagar05@gmail.com</p>
+Contact Us! 
+
+<a href="https://www.linkedin.com/in/sidddharthtiwari/"><p> Siddharth Tiwari</p></a>
+<a href="https://www.linkedin.com/in/sujal-sinha/"><p> Sujal Sinha</p></a>
+<a href="https://www.linkedin.com/in/akkilesh-a-620561275/"><p> Akkilesh A</p></a>
+
