@@ -10,8 +10,17 @@
 ### 😶ML - Python
 
 <h2>Project Screenshots:</h2>
+<h5>Our Home Page</h5>
+![HomePage](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/a89f2699-ef3b-4d01-8608-ae25867979b2)
 
-<img src="" alt="project-screenshot" width="400" height="400/">
+<h4>🧑🏻‍🎓 Job Seeker Path</h4>
+<h6>Jobs Portal</h6>
+![JobSeekerJobsPortal](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/4fc49f99-5821-4480-aeaf-998d3088d580)
+
+<h6>Resume Scanner</h6>
+![JobSeekerResumeScanner](https://github.com/Akkilesh-A/resume-copilot/assets/136828513/7e0444c2-4653-410b-ab8a-36d97deb3bc9)
+
+<h4></h4>
 
   
   
@@ -26,7 +35,7 @@ Here're some of the project's best features:
 *   Missing Keywords Generator
 
 <h2>🛠️ Installation Steps:</h2>
-
+<h4>Running the Frontend</h4>
 <p>1. Navigate to ."/frontend"</p>
 
 ```
@@ -36,8 +45,8 @@ npm install
 ```
 npm run dev
 ```
-
-<p>3. Navigate to "./backend"</p>
+<h4>Running the Backend</h4>
+<p>Navigate to "./backend"</p>
 
 ```
 python main.py
