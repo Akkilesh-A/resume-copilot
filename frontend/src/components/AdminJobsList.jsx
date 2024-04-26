@@ -61,7 +61,7 @@ function AdminJobsList({jobs,updateCallback, onUpdate}){
         {jobs.map((job) => {
                     return (
                     
-                        <div className='mx-4 w-[25vw] mt-8 h-[70vh] '>
+                        <div className='mx-4 w-[25vw] mt-8 h-[40vh] '>
                             <form onSubmit={handleSubmit}>
                                 <div className=' my-4 h-[5vh] flex flex-col items-center'>
                                     <div className='flex-col bg-gray-300  hover:fill-white hover:scale-110 duration-300 hover:duration-300 border-4 border-black p-4 rounded-xl flex justify-center items-center'>

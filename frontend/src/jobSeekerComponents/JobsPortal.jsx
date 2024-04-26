@@ -25,11 +25,11 @@ const JobsPortal = () => {
         <div className='flex m-auto justify-center items-center '>
             <h1 className='text-[2.5em] font-bold text-center'>Job Openings</h1>
             <div className='w-[50vw] text-center flex justify-end '>
-                <Link to="/resumescannerform">
+                <a target="_self" href="https://get-your-resume-score.streamlit.app/">
                     <button className='hover:bg-black hover:fill-white  hover:text-white flex justify-center items-center rounded-xl px-4 p-2 border-4 border-black font-bold'>
                     <h1 className='text-xl'>Get Your Resume Score 🚀</h1> 
                     </button> 
-                </Link>
+                </a>
             </div>
         </div>
         <div className='h-[50vh]'>

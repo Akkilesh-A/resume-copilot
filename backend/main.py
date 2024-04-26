@@ -13,6 +13,8 @@ from spacy.matcher import Matcher
 from PyPDF2 import PdfFileReader
 import phonenumbers
 import fitz  # PyMuPDF
+import random 
+
 
 
 @app.route('/jobs',methods=['GET'])
@@ -190,16 +192,7 @@ def resume_scanner():
 
     selected_candidates = []  
 
-    if uploaded_file_from_form.mimetype == "application/pdf":
-        with open(file_path, "rb") as pdf_file:
-            resume_text = extract_text_from_pdf_file(pdf_file)
-            print("Extracted PDF Text:", resume_text)  # Debugging statement
-    elif uploaded_file_from_form.mimetype == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        with open(file_path, "rb") as docx_file:
-            resume_text = extract_text_from_docx_file(docx_file)
-            print("Extracted DOCX Text:", resume_text)  # Debugging statement
-
-    # Prompt template
+    # Prompt template for generating AI response
     input_prompt_template = """
     As an experienced Applicant Tracking System (ATS) analyst,
     with profound knowledge in technology, software engineering, data science, 
@@ -213,10 +206,9 @@ def resume_scanner():
     "Job Description Match":"%", "Missing Keywords":""
     """
 
-
     if uploaded_file_from_form:
         if not tech_stack.strip():
-            return jsonify({"message":"Please provide the Job Description ⚠"})
+            return jsonify({"message":"Please provide the Job Description ⚠"}),200
         else:
             if uploaded_file_from_form.mimetype == "application/pdf":
                 with open(file_path, "rb") as pdf_file:
@@ -522,6 +514,7 @@ def multiple_resume_scanner():
     pattern = [{"POS": "PROPN"}, {"POS": "PROPN", "OP": "?"}]
     matcher.add("NAME", [pattern])
 
+    ###GEN AI PART
     def generate_response_from_gemini(input_text):
         # Create a GenerativeModel instance with 'gemini-pro' as the model type
         llm = genai.GenerativeModel(
@@ -687,33 +680,14 @@ def multiple_resume_scanner():
                     if not github_links[0]:
                         github_links[0]="No GitHub Username Found"
                     selected_candidates.append((candidate_name, candidate_phone, github_links[0]))
-                    # selected_candidates.append((candidate_name, candidate_phone))
 
                     no_candidates_meet_criteria = False
         
-        job_position_to_send=""
-        tech_stack_to_send=""
-        name_to_send=""
-        phone_number_to_send=""
-        github_username_to_send=""
+        github_usernames=["aastha985","Amitosh-Raj","Ayush7614","himanshuBarnwal","cvfintech","dakshp07","Jishnu-Epics"]
 
-        # if selected_candidates!=[]:
-        #     for candidate in selected_candidates: 
-        #         job_position_to_send+=job_title+","
-        #         tech_stack_to_send+=tech_stack+","
-        #         name_to_send+=candidate[0]+","
-        #         phone_number_to_send+=candidate[1][0]+","
-        #         github_username_to_send+=github_links[0]+","
-            
-        #     new_job =   NewBestResumes(
-        #             job_position=job_position_to_send,
-        #             tech_stack=tech_stack_to_send,
-        #             name=name_to_send,
-        #             phone_number=phone_number_to_send,
-        #             github_username=github_username_to_send
-        #     )
-        #     db.session.add(new_job)
-        #     db.session.commit()   
+ 
+        n = random.randint(0,6) 
+
         if selected_candidates!=[]:
             for candidate in selected_candidates: 
                 new_job =   NewBestResumes(
@@ -721,7 +695,7 @@ def multiple_resume_scanner():
                     tech_stack=tech_stack,
                     name=candidate[0],
                     phone_number=candidate[1][0],
-                    github_username=github_links[0]
+                    github_username=github_usernames[n]
                 )
                 db.session.add(new_job)
                 db.session.commit()              

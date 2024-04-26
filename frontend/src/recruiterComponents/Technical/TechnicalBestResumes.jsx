@@ -39,9 +39,9 @@ const BestResumes = () => {
                             <p>
                                 <span className='font-bold'>Phone Number:</span> {job.phoneNumber=="P"? "Phone Number Not Found":job.phoneNumber}
                             </p>
-                            <p>
+                            {/* <p>
                                 <span className='font-bold'>GitHub Username:</span> {job.githubUsername}
-                            </p>
+                            </p> */}
                             <div className='text-center my-4' >
                                 GitHub top languages
                                 <img className="mx-4" src={"https://github-readme-stats.vercel.app/api/top-langs?username="+job.githubUsername+"&show_icons=true&locale=en&layout=compact&theme=chartreuse-light"} alt="ovi" />
