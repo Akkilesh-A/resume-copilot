@@ -56,7 +56,7 @@ Technologies used in the project:
 *   Flask
 *   SQLite
 
-<h4>GenAI and ML</h4>
+<h4>GenAI</h4>
 
 *   Python
 *   GenAI(Google Gemini) 
